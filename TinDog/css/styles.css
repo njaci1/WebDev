@@ -1,0 +1,197 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Montserrat-Bold';
+  /* font-size: 3.5rem;
+  line-height: 1.5;
+  font-weight: bold; */
+}
+
+h2 {
+
+  font-size: 3rem;
+}
+
+h3 {
+
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+p {
+  color: #8f8f8f;
+}
+
+/* headings */
+.big-heading {
+  font-size: 3.5rem;
+  line-height: 1.5;
+  font-weight: bold;
+}
+
+#title {
+  background-color: #ff4c68;
+  color: white;
+  margin-bottom: 50px;
+  /* height: 3937.5%; */
+  /* 630px */
+}
+
+.container-fluid {
+  padding: 3% 15%;
+}
+
+.rotation {
+  transform: rotate(25deg);
+}
+
+/* navigation bar */
+.navbar {
+  padding-bottom: 4.5rem;
+  color: white;
+}
+
+.navbar-brand {
+  font-family: 'Ubuntu', sans-serif;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.navbar-item {
+  color: white;
+  padding: 0 25px;
+}
+
+.nav-link {
+  color: white;
+  font-size: 1.2rem;
+  font-family: 'Montserrat-Light'
+}
+
+/* downlod buttons */
+.download-btn {
+  margin: 5% 5% 5% 0;
+}
+
+/* title image */
+.title-image {
+  width: 40%;
+  /* the relative position is to move the image to the bottom of the containing div
+  this prevents the image from overlaping into the downlod buttons when rotated. */
+  position: relative;
+  top: 35px;
+  left: 50px;
+  /* right: 20px; */
+}
+
+/*features */
+#features {
+  background-color: white;
+  position: relative;
+  bottom: 185px;
+  padding-bottom: 0;
+}
+
+.fas {
+  color: #ef8172;
+  margin-bottom: 1rem;
+}
+
+.fas:hover {
+  color: #ff4c68
+}
+
+.features {
+  /* margin: 5px 25px; */
+  padding: 7% 15% 0 15%;
+  text-align: center;
+}
+
+/* Testimonials */
+#testimonials {
+  text-align: center;
+  background-color: #ef8172;
+  color: white;
+}
+
+.testimonial-image {
+  width: 10%;
+  border-radius: 100%;
+  margin: 20px;
+}
+
+.carousel-item {
+  padding: 7% 15%;
+  width: 100%;
+  height: auto;
+}
+
+#press {
+  background-color: #ef8172;
+  text-align: center;
+  padding-bottom: 3%;
+}
+
+.press-logo {
+  width: 10%;
+  margin: 20px 20px 50px;
+}
+
+/* .carousal-indicators-styling {
+  margin-top: 150px;
+} */
+/* pricing section */
+#pricing {
+  padding: 100px;
+}
+
+.pricing-cols {
+  padding: 3% 2%;
+}
+
+@media(max-width:1028px) {
+  .rotation {
+    transform: rotate(0);
+  }
+
+  #features {
+    background-color: white;
+    position: static;
+    bottom: 185px;
+    padding-bottom: auto;
+  }
+
+  #title {
+    text-align: center;
+  }
+}
+
+#cta {
+  background-color: #ff4c68;
+  text-align: center;
+  color: white;
+  padding: 7% 15%;
+}
+
+.cta-h3 {
+  font-family: 'Montserrat-Black';
+  font-size: 3.5rem;
+}
+
+.download-btn1 {
+  margin: 10px;
+}
+
+#footer {
+  background-color: #ffffff;
+  text-align: center;
+  padding: 2%;
+}
+
+.footer-a-tags {
+  margin-left: 5px;
+  margin-right: 5px;
+}
