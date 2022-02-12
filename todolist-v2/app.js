@@ -51,7 +51,8 @@ const task3 = new Item({
   name: "Eat Food"
 });
 
-const deftList = [task1,task2,task3];
+// const deftList = [task1,task2,task3];
+const deftList = [];
 
 app.get("/", function(req, res) {
   const tasks = [];
@@ -160,8 +161,13 @@ app.get("/:customList", function(req,res){
   DynamicList.findOne({name:customListName},function(err,foundList){
     if(!err){
       if(!foundList){
+        const listItems = [];
         const list = new DynamicList({name:customListName, items:deftList});
         list.save();
+
+        res.render("list",{  listTitle: customListName,
+                            newListItems: listItems});
+
       }else {
         // console.log(foundList);
         const listItems = [];
@@ -180,6 +186,10 @@ app.get("/:customList", function(req,res){
 
 });
 
-app.listen(3000, function() {
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+app.listen(port, function() {
   console.log("Server started on port 3000");
 });
