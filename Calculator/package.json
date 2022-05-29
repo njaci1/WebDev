@@ -9,6 +9,8 @@
   "author": "KN",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.19.1"
+    "body-parser": "^1.19.1",
+    "express": "^4.18.1",
+    "unirest": "^0.2.7"
   }
 }

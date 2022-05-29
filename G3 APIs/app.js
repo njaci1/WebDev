@@ -1,5 +1,7 @@
 //jshint esversion:6
 
+// https://blog.logrocket.com/nodejs-expressjs-postgresql-crud-rest-api-example/
+
 const express = require("express");
 const bodyParser = require("body-parser");
 // const date = require(__dirname + "/date.js");
