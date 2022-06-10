@@ -3,8 +3,11 @@ const bodyParser = require("body-parser");
 const app = express();
 const https = require("https");
 let unirest = require('unirest');
-app.use(bodyParser.json());
+const Pool = require("pg").Pool;
 
+const date = require("./getDateTime");
+const {pool} = require ("./queries");
+app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -12,31 +15,14 @@ app.use(bodyParser.urlencoded({
 
 app.get("/checkout", function(req, res) {
   res.sendFile(__dirname + "/checkout.html");
+
 });
 
 app.post("/checkout", function(req, res) {
   var msisdn = Number(req.body.msisdn);
   const businessShortCode = "174379";
-
-  function getDayTime(){
-    let currentDay = new Date();
-    let year = String(currentDay.getFullYear());
-    let month = String((currentDay.getMonth()+1));
-    let day = String(currentDay.getDate());
-    let hour = String(currentDay.getHours());
-    let minutes = String(currentDay.getMinutes());
-    let seconds = String(currentDay.getSeconds());
-
-    if(month < 10){month = "0"+month;}
-    if(day < 10){day = "0"+day;}
-    if(hour < 10){hour = "0"+hour;}
-    if(minutes < 10){minutes = "0"+minutes;}
-    if(seconds < 10){seconds = "0"+seconds;}
-
-    let timestamp = year+month+day+hour+minutes+seconds;
-    return timestamp;
-
-  }
+  var amount = Number(req.body.amount);
+  console.log(req.body);
 
 let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
   // get passkey
@@ -52,19 +38,17 @@ let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
 
     var result = '';
     const passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
+    const url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+
     response.on('data', function(chunk) {
       result += chunk;
       const res_body = JSON.parse(result);
       let token = res_body.access_token;
 
-      let encodedPasswd =btoa('174379'+passkey +getDayTime());
-      console.log(passkey);
-      console.log(getDayTime());
-      console.log(encodedPasswd);
+      let encodedPasswd = btoa(businessShortCode+passkey +date.getDayTime());
 
       //send push request
-      let unirest = require('unirest');
-      let req = unirest('POST', 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest')
+      let req = unirest('POST', url)
         .headers({
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
@@ -72,13 +56,13 @@ let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
         .send(JSON.stringify({
           "BusinessShortCode": 174379,
           "Password": encodedPasswd,
-          "Timestamp": getDayTime(),
+          "Timestamp": date.getDayTime(),
           "TransactionType": "CustomerPayBillOnline",
-          "Amount": 1,
+          "Amount": amount,
           "PartyA": msisdn,
           "PartyB": 174379,
           "PhoneNumber": msisdn,
-          "CallBackURL": "https://617e-197-232-84-142.ngrok.io/callback",
+          "CallBackURL": "https://d18a-197-232-84-142.ngrok.io/callback",
           "AccountReference": "CompanyXLTD",
           "TransactionDesc": "Payment of X"
         }))
@@ -91,7 +75,7 @@ let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
     });
 
     response.on('end', function() {
-      console.log(result);
+      console.log(`get token part ${result}`);
     });
   });
 
@@ -99,6 +83,21 @@ let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
 });
 
 app.get("/callback",function(req,res){
+  console.log(date.getDayTime());
+
+  // const pool = new Pool ({
+  //   user: 'laude',
+  //   host: 'localhost',
+  //   database: 'transactions',
+  //   password: 'password',
+  //   port: 5432
+  // });
+pool.query("INSERT INTO ORDERS (order_ref, order_desc,checkout_msisdn,checkout_status_code,checkout_status_desc) VALUES ('order4', 'online checkout','0711000003','0','Success')",
+              (err,res)=>{
+                if(err){throw err}
+                console.log("1 record inserted");
+              })
+
   res.send("Ngrok OK");
 });
 
@@ -108,7 +107,7 @@ app.post("/callback", function(req,res){
   var result = req.body.Body.stkCallback.CallbackMetadata;
   console.log(result);
   var resultArry = result.Item;
-  var mpesaRef = resultArry[1];
+  var mpesaRef = resultArry[1].Value;
   console.log(mpesaRef);
 
   res.writeHead(200,{"Content-Type":"application/json"});
@@ -118,3 +117,6 @@ app.post("/callback", function(req,res){
 app.listen(3000, function() {
   console.log("Server started and listeninng on port 3000")
 });
+
+// INSERT INTO ORDERS (order_ref, order_desc,checkout_msisdn,checkout_status_code,checkout_status_desc)
+//   VALUES ('order2', 'online checkout','0711000000','0','Success');
