@@ -62,12 +62,17 @@ let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
           "PartyA": msisdn,
           "PartyB": 174379,
           "PhoneNumber": msisdn,
-          "CallBackURL": "https://d18a-197-232-84-142.ngrok.io/callback",
+          "CallBackURL": "https://c27e-197-232-84-142.ngrok.io/callback",
           "AccountReference": "CompanyXLTD",
           "TransactionDesc": "Payment of X"
         }))
         .end(res => {
           if (res.error) throw new Error(res.error);
+          response =JSON.parse(res.raw_body);
+          console.log(`${msisdn},${amount},${date.getDayTime()},${response.MerchantRequestID},${response.CheckoutRequestID},${response.ResponseCode}`);
+          pool.query(`INSERT INTO ORDERS (order_ref, order_desc,checkout_msisdn,checkout_status_code,checkout_status_desc,merchantrequestid,responsecode)
+          VALUES ('order5', 'online checkout','${msisdn}','${amount}','${date.getDayTime()}','${response.MerchantRequestID}','${response.ResponseCode}')`);
+
           console.log(res.raw_body);
         });
 
@@ -84,31 +89,23 @@ let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
 
 app.get("/callback",function(req,res){
   console.log(date.getDayTime());
-
-  // const pool = new Pool ({
-  //   user: 'laude',
-  //   host: 'localhost',
-  //   database: 'transactions',
-  //   password: 'password',
-  //   port: 5432
-  // });
-pool.query("INSERT INTO ORDERS (order_ref, order_desc,checkout_msisdn,checkout_status_code,checkout_status_desc) VALUES ('order4', 'online checkout','0711000003','0','Success')",
-              (err,res)=>{
-                if(err){throw err}
-                console.log("1 record inserted");
-              })
+  pool.query("INSERT INTO CALLBACKS(merchantrequestid,resultcode,resultdesc,mpesaref) VALUES('21167-56197456-1','0','Success','QFC5MCR0P9')");
 
   res.send("Ngrok OK");
 });
 
 app.post("/callback", function(req,res){
-  console.log('POST /');
   console.dir(req.body);
   var result = req.body.Body.stkCallback.CallbackMetadata;
+  var stkCallback = req.body.Body.stkCallback
+  console.log(`${stkCallback.MerchantRequestID},${stkCallback.CheckoutRequestID},${stkCallback.ResultCode}`);
+
   console.log(result);
   var resultArry = result.Item;
   var mpesaRef = resultArry[1].Value;
   console.log(mpesaRef);
+pool.query(`INSERT INTO CALLBACKS(merchantrequestid,resultcode,resultdesc,mpesaref) VALUES('${stkCallback.MerchantRequestID}','${stkCallback.ResultCode}','${stkCallback.ResultDesc}','${mpesaRef}')`);
+  // INSERT INTO CALLBACKS(merchantrequestid,resultcode,resultdesc,mpesaref) VALUES(${})
 
   res.writeHead(200,{"Content-Type":"application/json"});
   res.end('{"message":"This is a JSON reponse"}');
