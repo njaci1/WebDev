@@ -62,7 +62,7 @@ let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
           "PartyA": msisdn,
           "PartyB": 174379,
           "PhoneNumber": msisdn,
-          "CallBackURL": "https://c27e-197-232-84-142.ngrok.io/callback",
+          "CallBackURL": "https://8f41-197-232-84-142.ngrok.io/callback",
           "AccountReference": "CompanyXLTD",
           "TransactionDesc": "Payment of X"
         }))

@@ -1,21 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>checkout</title>
-  </head>
-  <body>
+
+<head>
+  <meta charset="utf-8">
+  <title>checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link type="text/css" rel="stylesheet" href="main.css" />
+  <script src="https://unpkg.com/@microsoft/mgt/dist/bundle/mgt-loader.js"></script>
+</head>
+
+<body>
+  <div class="container">
+
     <h1>Checkout Page</h1>
     <form class="" action="/checkout" method="post">
       <input type="text" name="msisdn" value="" placeholder="msisdn">
       <input type="text" name="amount" value="" placeholder="amount">
-
       <button type="submit" name="submit">CheckOut</button>
-
     </form>
+    
+    <!-- <mgt-msal2-provider scopes="user.read.all" client-id="e3335e61-3e47-4c35-8cf8-38a0e094a95d"></mgt-msal2-provider> -->
+    <mgt-msal2-provider client-id="e3335e61-3e47-4c35-8cf8-38a0e094a95d"></mgt-msal2-provider>
+    <mgt-login></mgt-login>
+    <mgt-agenda></mgt-agenda>
+    <mgt-tasks></mgt-tasks>
+  
+    <mgt-people-picker></mgt-people-picker> -->
+  </div>
+  <script src="" type="text/javascript">
 
-    <script src="" type="text/javascript">
+  </script>
+</body>
 
-    </script>
-  </body>
 </html>
+
