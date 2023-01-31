@@ -45,10 +45,7 @@ export default function AppForm() {
           password: password,
             ref: ref,
         })
-      })
-      .then(response => response.json())
-      .then((body) => {console.log(body)})
-
+      });
       let resJson = await res.json();
       console.log(resJson.status);
       if (res.status === 200) {
