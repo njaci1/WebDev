@@ -1,4 +1,4 @@
-import './styles.css'
+import '../index.css'
 import react from 'react';
 
 export default function AppForm() {
@@ -90,7 +90,7 @@ export default function AppForm() {
             />
             <button type='submit' style = {{backgroundColor: mouseOn ? "black" : "white"}}
           onMouseOver={handleMouseIn} onMouseOut={handleMouseOut}
-          >Submit</button>
+          >Register</button>
           <div className="message">{message ? <p>{message}</p> : null}</div>
         </form>
       </div>

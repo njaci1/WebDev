@@ -1,20 +1,40 @@
-import logo from './logo.svg';
-import './main.css';
+// import logo from './logo.svg';
+import './index.css';
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 function Bank(){
+
+    var acc = useLocation().state.acc;
+    
     const [data, setData] = useState(null);
     const [dline, setDline] = useState(null);
+    const navigate = useNavigate();
+
+    function handleSignOut(){
+        navigate("/");
+    }
+
+    const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: JSON.stringify({
+            acc: acc,
+        }),
+    }
 
     useEffect(() => {
-        fetch('http://localhost:3005/balance')
+        let url = 'http://localhost:3005/balance';
+        fetch(url, options)
             .then(response => response.json())
             .then(data => setData(data))
             .catch(error => console.error(error))
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:3005/downline')
+        let url = 'http://localhost:3005/downline';
+        fetch(url,options)
             .then(response => response.json())
             .then(dline => setDline(dline))
             .catch(error => console.error(error))
@@ -25,7 +45,7 @@ function Bank(){
     return(
         <div className="container">
         <header >
-        <img src={logo} alt="logo" />
+        {/* <img src={logo} alt="logo" /> */}
         {/* <img src='../public/DBank.png' alt="logo" /> */}
         <h1>Balance<br></br>ksh.
         { data !== null ? <span id="value">{data}</span> : <p>loading</p>}
@@ -33,8 +53,8 @@ function Bank(){
       </header>
       <div className="divider"></div>
       <form action="#">
-      <h2>Amount to Withdraw</h2>
-      <input id="withdrawal-amount" type="number" name="withdraw"  value=""/>
+      <h2>Withdraw</h2>
+      <input id="withdrawal-amount" type="number" name="withdraw"  value=" " placeholder='Amount'/>
       <input id="submit-btn" type="submit" value="Submit" />
     </form>
 
@@ -66,7 +86,11 @@ function Bank(){
                 <p>Loading...</p>
             )}
         </div>
-
+        <br></br>
+        <br></br>
+        <button className='signOutBtn' onClick={handleSignOut}>
+                SIGN OUT
+            </button>
 
         </div>
     )

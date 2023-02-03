@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import './index.css';
+import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Bank from './bank';
-import AppForm from './auth/form';
-
+// import Bank from './bank';
+// import AppForm from './auth/form';
+// import Login from './auth/login';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AppForm />
+    {/* <AppForm /> */}
+      {/* <Bank /> */}
+    <App />
   </React.StrictMode>
 );
 

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "react-dom": "^18.2.0"
   }
 }
