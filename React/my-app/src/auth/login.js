@@ -6,12 +6,34 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    let handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({ email, password });
-        setPassword("");
-        setEmail("");
-    };
+        fetch('http://localhost:3005/login',
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: JSON.stringify({
+              email: email,
+              password: password,
+            })
+          })
+        .then(res => { return res.json()})
+        .then(data => {
+            
+            if (data.status === 200) {
+    
+                setEmail("");
+                setPassword("");
+                 function redirect(){
+                    
+                    navigate("/Bank", { state: { acc: data.message } });
+                    
+                  };
+                  redirect();
+              }
+            })
+        .catch(err => console.log(err))
+        };
 
     const gotoSignUpPage = () => navigate("/register");
     return (
@@ -32,7 +54,7 @@ const Login = () => {
                     type='password'
                     name='password'
                     id='password'
-                    minLength={8}
+                    minLength={0}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

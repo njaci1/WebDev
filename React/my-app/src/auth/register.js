@@ -26,7 +26,7 @@ const Signup = (props) => {
           })
         .then(res => { return res.json()})
         .then(data => {
-            console.log(data)
+            
             if (data.status === 200) {
                 setName("");
                 setEmail("");
