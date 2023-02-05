@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import './index.css';
+// import './index.css';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -9,8 +9,9 @@ function Bank(){
     var acc = useLocation().state.acc;
     
     const [data, setData] = useState(null);
-    const [dline, setDline] = useState(null);
+    const [dline, setDline] = useState([]);
     const navigate = useNavigate();
+
 
     function handleSignOut(){
         navigate("/");
@@ -27,10 +28,10 @@ function Bank(){
     useEffect(() => {
         let url = 'http://localhost:3005/balance';
         fetch(url, options)
-            .then(response => response.json())
+            .then(response => {return response.json()})
             .then(data => setData(data))
             .catch(error => console.error(error))
-    }, []);
+    });
 
     useEffect(() => {
         let url = 'http://localhost:3005/downline';
@@ -38,10 +39,19 @@ function Bank(){
             .then(response => response.json())
             .then(dline => setDline(dline))
             .catch(error => console.error(error))
-    },
+    },[]
+    );
 
-    []);
+    // useEffect(() => {
+    //     fetch('http://localhost:3005/downline')
+    //         .then(response => response.json())
+    //         .then(dline => {console.log(dline)
+    //             setDline(dline)})
+    //         .catch(error => console.error(error))
+    // },
 
+    // []);
+ 
     return(
         <div className="container">
         <header >
@@ -52,11 +62,13 @@ function Bank(){
         </h1>
       </header>
       <div className="divider"></div>
+      <div>
       <form action="#">
       <h2>Withdraw</h2>
       <input id="withdrawal-amount" type="number" name="withdraw"  value=" " placeholder='Amount'/>
       <input id="submit-btn" type="submit" value="Submit" />
     </form>
+    </div>
 
     <div>
         <h2>Network</h2>
@@ -74,12 +86,13 @@ function Bank(){
                     </thead>
                     <tbody>
                     <tr>
-                        {dline.forEach(item => (
+                        {dline.map((item,index) => (
                             
-                                <td>{item}</td>
+                                <td key={index}>{item}</td>
                            
                         ))}
                         </tr>
+                     
                     </tbody>
                 </table>
             ) : (
@@ -97,3 +110,4 @@ function Bank(){
 }
 
 export default Bank;
+
