@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const Signup = () => {
+
+
+
+const Invitation = () => {
     const navigate = useNavigate();
     const [tel, setTel] = useState("");
     const [name, setName] = useState("");
@@ -9,6 +12,12 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [ref, setRef] = useState("");
     const [message, setMessage] = useState("");
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    var inviter = queryParams.get('inviter');
+    
+    console.log(inviter);
 
       let handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,7 +30,7 @@ const Signup = () => {
               email: email,
               password: password,
                 tel: tel,
-                ref: ref,
+                ref: inviter,
             })
           })
         .then(res => { return res.json()})
@@ -90,28 +99,29 @@ const Signup = () => {
                 />
                 <label htmlFor='Ivinted By'>Ivinted By</label>
                 <input
+                    disabled
                     type='text'
                     name='ref'
                     id='ref'
                     minLength={1}
                     required
-                    value={ref}
-                    placeholder="Enter code given by the person who invited you"
+                    
+                    placeholder={inviter}
                     onChange={(e) => setRef(e.target.value)}
                 />
                 <button className='signupBtn'>SIGN UP</button>
-                <div className="message">{message ? <p>{message}</p> : 
+                {/* <div className="message">{message ? <p>{message}</p> : 
                 <p>
                     Already have an account?{" "}
                     <span className='link' onClick={gotoLoginPage}>
                         Login
                     </span>
                 </p> }
-                </div>
+                </div> */}
             </form>
             
         </div>
         
     );
 };
-export default Signup;
+export default Invitation;

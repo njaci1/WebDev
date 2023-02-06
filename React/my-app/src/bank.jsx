@@ -17,6 +17,8 @@ function Bank(){
         navigate("/");
     }
 
+    const gotoInitationPage = () => navigate(`/invitation?ref=${acc}`);
+
     const options = {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -101,6 +103,9 @@ function Bank(){
         </div>
         <br></br>
         <br></br>
+        <a href={`https://wa.me/?text=Join me on my app using this link: http://localhost:3000/invitation?inviter=${acc}`}>
+  Send Invitation via WhatsApp
+</a>
         <button className='signOutBtn' onClick={handleSignOut}>
                 SIGN OUT
             </button>
