@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+    // email and phone number should be unique
+    // validation to be during the registration process before submitting to the database
     const navigate = useNavigate();
     const [tel, setTel] = useState("");
     const [name, setName] = useState("");

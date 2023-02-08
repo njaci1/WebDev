@@ -3,6 +3,8 @@ import Login from "./auth/login";
 import Signup from "./auth/register";
 import Invitation from "./auth/invitation";
 import Bank from "./bank";
+import ForgotPassword from "./auth/forgotPassword";
+import ResetPassword from "./auth/resetPassword";
 
 function App() {
     return (
@@ -12,6 +14,8 @@ function App() {
                 <Route path='/register' element={<Signup />} />
                 <Route path='/invitation' element={<Invitation />} />
                 <Route path='/bank' element={<Bank />} />
+                <Route path='/forgotPassword' element={<ForgotPassword />} />
+                <Route path='/resetPassword' element={<ResetPassword />} />
             </Routes>
         </BrowserRouter>
     );

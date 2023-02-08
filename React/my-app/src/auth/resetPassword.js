@@ -1,20 +1,24 @@
+// a 3 input form to reset password.
+// the user will enter their email, new password and confirm password.
+// another input field will appear after submiting the password asking user to input sms code sent to their phone number. -- this is will be implemented later.
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
-    const [email, setEmail] = useState("");
+const ResetPassword = () => {
+    
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
     let handleSubmit = async (e) => {
         e.preventDefault();
-        fetch('http://localhost:3005/login',
+        fetch('http://localhost:3005/resetPassword',
         {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: JSON.stringify({
-              email: email,
+              
               password: password,
             })
           })
@@ -22,37 +26,31 @@ const Login = () => {
         .then(data => {
             
             if (data.status === 200 && data.message !== "invalidLogin") {
-    
-                setEmail("");
                 setPassword("");
-                 function redirect(){
-                    
-                    navigate("/Bank", { state: { acc: data.message } });
-                    
-                  };
-                  redirect();
+                setMessage("Password reset successful click here to login");
+
               }else{
-                setMessage("Invalid Username or Password please try again or click here to reset password");
+                
                 // alert("Invalid Username or Password please try again");
               }
             })
         .catch(err => console.log(err))
         };
 
-    const gotoSignUpPage = () => navigate("/register");
-    const forgotPassword = () => navigate("/forgotPassword");
+    const gotoLogin = () => navigate("/login");
     return (
         <div className='login__container'>
-            <h2>Login </h2>
+            <h2>Reset Password </h2>
             <form className='login__form' onSubmit={handleSubmit}>
-                <label htmlFor='email'>Email</label>
+                <label htmlFor='password'>Password</label>
                 <input
-                    type='text'
-                    id='email'
-                    name='email'
-                    value={email}
+                    type='password'
+                    name='password'
+                    id='password'
+                    minLength={0}
                     required
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
                 <label htmlFor='password'>Password</label>
                 <input
@@ -65,23 +63,17 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="message">{message ? 
-                <p style={{color:"red"}}>{message} {" "} 
-                <span className='link' onClick={forgotPassword}>
-                        Reset Password
+                <p style={{color:"green"}}>{message} {" "} 
+                <span className='link' onClick={gotoLogin}>
+                        Login
                     </span>
                 </p>
-                 : null}</div>
-                <button className='loginBtn'>SIGN IN</button>
-                
-                <p>
-                    Don't have an account?{" "}
-                    <span className='link' onClick={gotoSignUpPage}>
-                        Sign up
-                    </span>
-                </p>
+                : null}</div>
+                <button className='loginBtn'>Reset Password</button>
+
                 </form>
         </div>
     );
 };
 
-export default Login;
+export default ResetPassword;
