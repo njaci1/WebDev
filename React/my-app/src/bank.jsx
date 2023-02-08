@@ -103,8 +103,8 @@ function Bank(){
         </div>
         <br></br>
         <br></br>
-        <a href={`https://wa.me/?text=Join me on my app using this link: http://localhost:3000/invitation?inviter=${acc}`}>
-  Send Invitation via WhatsApp
+        <a href={`https://wa.me/?text=Join me on my network using this link: http://localhost:3000/invitation?inviter=${acc}`}>
+  Build you network by inviting your friends
 </a>
         <button className='signOutBtn' onClick={handleSignOut}>
                 SIGN OUT

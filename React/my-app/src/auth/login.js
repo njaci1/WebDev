@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
     let handleSubmit = async (e) => {
@@ -20,7 +21,7 @@ const Login = () => {
         .then(res => { return res.json()})
         .then(data => {
             
-            if (data.status === 200) {
+            if (data.status === 200 && data.message !== "invalidLogin") {
     
                 setEmail("");
                 setPassword("");
@@ -30,6 +31,9 @@ const Login = () => {
                     
                   };
                   redirect();
+              }else{
+                setMessage("Invalid Username or Password please try again");
+                // alert("Invalid Username or Password please try again");
               }
             })
         .catch(err => console.log(err))
@@ -59,7 +63,9 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
+                <div className="message">{message ? <p style={{color:"red"}}>{message}</p> : null}</div>
                 <button className='loginBtn'>SIGN IN</button>
+                
                 <p>
                     Don't have an account?{" "}
                     <span className='link' onClick={gotoSignUpPage}>
