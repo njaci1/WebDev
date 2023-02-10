@@ -20,9 +20,9 @@ const ForgotPassword = () => {
             })
           })
         .then(res => { return res.json()})
-        .then(data => {
+        .then(data => { console.log(data.result)
             
-            if (data.status === 200 && data.message !== "invalidLogin") {
+            if (data.status === 200 && data.result !== "invalidEmail") {
     
                 setEmail("");
                 setMessage("A link to reset your password has been sent to your email address.");
@@ -50,7 +50,7 @@ const ForgotPassword = () => {
                     onChange={(e) => setEmail(e.target.value)}
                 />
 
-                <div className="message">{message ? <p style={{color:"red"}}>{message}</p> : null}</div>
+                <div className="message">{message ? <p style={{color:"green"}}>{message}</p> : null}</div>
                 <button className='loginBtn'>Submit</button>
                 </form>
         </div>

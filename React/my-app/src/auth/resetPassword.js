@@ -56,7 +56,7 @@ const ResetPassword = () => {
                 <input
                     type='password'
                     name='password'
-                    id='password'
+                    id='password1'
                     minLength={0}
                     required
                     value={password}
