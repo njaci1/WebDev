@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { useNavigate } from "react-router-dom";
+// import userContext  from "../userContext";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    // const {setAcc} = useContext(userContext);
+
+    // const setAccWithNavigation = (value) => {
+    //     setAcc(value);
+    //     navigate("/Bank");}
+    
 
     let handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,15 +29,13 @@ const Login = () => {
         .then(data => {
             
             if (data.status === 200 && data.message !== "invalidLogin") {
-    
                 setEmail("");
                 setPassword("");
-                 function redirect(){
-                    
-                    navigate("/Bank", { state: { acc: data.message } });
-                    
-                  };
-                  redirect();
+                // setAcc(data.message);
+                navigate('/bank',{state:{acc:data.message.customer_acc, phoneNumber:data.message.phoneNumber}});
+                
+                // setAccWithNavigation(data.message);
+
               }else{
                 setMessage("Invalid Username or Password please try again or click here to reset password");
                 // alert("Invalid Username or Password please try again");

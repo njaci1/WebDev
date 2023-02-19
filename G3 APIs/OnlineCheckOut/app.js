@@ -19,10 +19,19 @@ app.get("/checkout", function(req, res) {
 });
 
 app.post("/checkout", function(req, res) {
-  var msisdn = Number(req.body.msisdn);
+
+  // console.log(req.body);
+
+  res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.set('Content-Type', 'application/json'); 
+
+  var msisdn = '254724299623'// Number(req.body.msisdn);
   const businessShortCode = "174379";
-  var amount = Number(req.body.amount);
-  console.log(req.body);
+  var amount = 1 // Number(req.body.amount);
+  // console.log(req.body);
+  var responseCode 
+  var responseDesc
+  
 
 let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
   // get passkey
@@ -62,16 +71,18 @@ let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
           "PartyA": msisdn,
           "PartyB": 174379,
           "PhoneNumber": msisdn,
-          "CallBackURL": "https://8f41-197-232-84-142.ngrok.io/callback",
+          "CallBackURL": "https://2053-197-232-84-142.ngrok.io/callback",
           "AccountReference": "CompanyXLTD",
           "TransactionDesc": "Payment of X"
         }))
         .end(res => {
           if (res.error) throw new Error(res.error);
           response =JSON.parse(res.raw_body);
+          responseCode = response.ResponseCode;
+          responseDesc = response.ResponseDescription;
           console.log(`${msisdn},${amount},${date.getDayTime()},${response.MerchantRequestID},${response.CheckoutRequestID},${response.ResponseCode}`);
-          pool.query(`INSERT INTO ORDERS (order_ref, order_desc,checkout_msisdn,checkout_status_code,checkout_status_desc,merchantrequestid,responsecode)
-          VALUES ('order5', 'online checkout','${msisdn}','${amount}','${date.getDayTime()}','${response.MerchantRequestID}','${response.ResponseCode}')`);
+          // pool.query(`INSERT INTO ORDERS (order_ref, order_desc,checkout_msisdn,checkout_status_code,checkout_status_desc,merchantrequestid,responsecode)
+          // VALUES ('order5', 'online checkout','${msisdn}','${amount}','${date.getDayTime()}','${response.MerchantRequestID}','${response.ResponseCode}')`);
 
           console.log(res.raw_body);
         });
@@ -84,7 +95,7 @@ let auth = btoa('uD8Ff5UsgMjRVJ11UsXDYFgFZNsLXxAI:SDaZ8NPlISdPLUGW');
     });
   });
 
-  res.send("Complete the checkout on your phone " + msisdn);
+  res.json({ResultCode: responseCode, ResponseDesc: responseDesc});
 });
 
 app.get("/callback",function(req,res){
@@ -104,14 +115,14 @@ app.post("/callback", function(req,res){
   var resultArry = result.Item;
   var mpesaRef = resultArry[1].Value;
   console.log(mpesaRef);
-pool.query(`INSERT INTO CALLBACKS(merchantrequestid,resultcode,resultdesc,mpesaref) VALUES('${stkCallback.MerchantRequestID}','${stkCallback.ResultCode}','${stkCallback.ResultDesc}','${mpesaRef}')`);
-  // INSERT INTO CALLBACKS(merchantrequestid,resultcode,resultdesc,mpesaref) VALUES(${})
+// pool.query(`INSERT INTO CALLBACKS(merchantrequestid,resultcode,resultdesc,mpesaref) VALUES('${stkCallback.MerchantRequestID}','${stkCallback.ResultCode}','${stkCallback.ResultDesc}','${mpesaRef}')`);
+//   // INSERT INTO CALLBACKS(merchantrequestid,resultcode,resultdesc,mpesaref) VALUES(${})
 
   res.writeHead(200,{"Content-Type":"application/json"});
   res.end('{"message":"This is a JSON reponse"}');
 })
 
-app.listen(3000, function() {
+app.listen(3008, function() {
   console.log("Server started and listeninng on port 3000")
 });
 
